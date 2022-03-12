@@ -9,13 +9,14 @@
                 &nbsp; New
             </a>
         </div>
-        <table id="mainDataTable" class="display">
+        <table id="mainDataTable" class="display text-center">
             <thead>
             <tr>
                 <th>No</th>
                 <th>Name</th>
                 <th>Subject</th>
                 <th>Folder Name</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -25,6 +26,11 @@
                         <td>{{ $data->name }}</td>
                         <td>{{ $data->subject }}</td>
                         <td>{{ $data->folder_name }}</td>
+                        <td>
+                            <a href="{{ route("edit", $data->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="{{ route("show", $data->id) }}" class="btn btn-sm btn-info">Show</a>
+                            <a href="{{ route("destroy", $data->id) }}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

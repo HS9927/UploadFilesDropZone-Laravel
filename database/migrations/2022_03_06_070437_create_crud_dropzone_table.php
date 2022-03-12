@@ -18,6 +18,7 @@ class CreateCrudDropzoneTable extends Migration
             $table->string("name");
             $table->string("subject");
             $table->string("folder_name");
+            $table->boolean("is_active")->default(1);
             $table->timestamps();
         });
     }
