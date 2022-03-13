@@ -19,20 +19,20 @@
 
     <h2 class="card-title mb-3 text-center" style="font-size: 1.8rem">Information</h2>
 
-    <form action="{{route("store")}}" method="POST" enctype="multipart/form-data"
+    <form action="{{ route("update", $data->id) }}" method="POST" enctype="multipart/form-data"
           id="main-frm">
         @csrf
 
-        <input type="hidden" name="folder_name" class="w-100" value="{{$folder_name}}"/>
+        <input type="hidden" name="folder_name" class="w-100" value="{{ $data->folder_name }}"/>
 
         <div class="form-group">
             <label>Name</label>
-            <input type="text" name="name" class="form-control" required />
+            <input type="text" name="name" class="form-control" value="{{ $data->name }}" required />
         </div>
 
         <div class="form-group mt-2">
             <label>Subject</label>
-            <input type="text" name="subject" class="form-control" required/>
+            <input type="text" name="subject" class="form-control" value="{{ $data->subject }}" required/>
         </div>
 
         <button type="submit" style="display: none;"></button>
@@ -40,7 +40,7 @@
     </form>
 
     <div class="mb-2">
-        <form action="{{route("store.file", $folder_name)}}" id="dropzoneForm" class="dropzone mt-4"
+        <form action="{{ route("store.permanent.file", $data->folder_name) }}" id="dropzoneForm" class="dropzone mt-4"
               style="height: 100px;">
             @csrf
             <div class="fallback">
@@ -77,8 +77,6 @@
         $("#btn-submit").on("click", function () {
             $("#main-frm").find("[type='submit']").trigger("click");
         });
-
-
     </script>
 
     <!-- Script Upload File -->
@@ -109,9 +107,9 @@
 
         function load_images() {
             $('document').ready(function () {
-                var folderName = "{{ $folder_name }}";
+                var folderName = "{{ $data->folder_name }}";
                 $.ajax({
-                    url: "{{ route('fetch.file') }}",
+                    url: "{{ route('fetch.permanent.file') }}",
                     data: {folder: folderName},
                     success: function (data) {
                         $('.uploaded_att').html(data);
@@ -122,9 +120,9 @@
 
         $(document).on('click', '.remove_image', function () {
             var name = $(this).attr('id');
-            var folderName = "{{ $folder_name }}";
+            var folderName = "{{ $data->folder_name }}";
             $.ajax({
-                url: "{{ route('destroy.temp.file') }}",
+                url: "{{ route('destroy.permanent.file') }}",
                 data: {
                     folder: folderName,
                     name: name
