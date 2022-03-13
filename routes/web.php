@@ -25,7 +25,7 @@ Route::post("/crud/store", [UploadAttachmentController::class, "store"])->name("
 Route::get("/crud/edit/{id}", [UploadAttachmentController::class, "edit"])->name("edit");
 Route::post("/crud/update/{id}", [UploadAttachmentController::class, "update"])->name("update");
 Route::get("/crud/show/{id}", [UploadAttachmentController::class, "show"])->name("show");
-Route::get("/crud/destroy/{id}", [\Illuminate\Bus\UpdatedBatchJobCounts::class, "destroy"])->name("destroy");
+Route::get("/crud/destroy/{id}", [UploadAttachmentController::class, "destroy"])->name("destroy");
 
 /// For Upload Attachments
 Route::get("/file/fetch", [UploadAttachmentController::class, "fetch_file"])->name("fetch.file");

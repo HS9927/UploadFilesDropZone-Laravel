@@ -52,12 +52,14 @@ class UploadAttachmentController extends Controller
         DB::beginTransaction();
         try {
 
+            /// TODO: Validate Datas
             $validate = $request->validate([
                 "name" => "required",
                 "subject" => "required",
                 "folder_name" => "required"
             ]);
 
+            /// TODO: Insert Data to DB
             $insertToDB = DropZone::create([
                 "name" => $request->name,
                 "subject" => $request->subject,
@@ -77,23 +79,25 @@ class UploadAttachmentController extends Controller
                     File::move(storage_path($this->path_temp . $request->folder_name . "/" . $files[$key]->getFilename()), storage_path($this->path_permanent . $request->folder_name . "/" . $files[$key]->getFilename()));
                 }
 
+                /// TODO: Delete Folder from Temp
                 File::deleteDirectory(storage_path($this->path_temp . $request->folder_name));
 
             }
 
-
-
             DB::commit();
 
-            return redirect()->route("index")->with("message", "Error: Data added Successfully");
+            return redirect()->route("index")->with("message", "Data added Successfully");
+
         } catch (Exception $exce) {
             DB::rollBack();
-            return redirect()->back();
+            return redirect()->back()->with("error", "Something went wrong, please try again !");
         }
     }
 
     public function edit($id)
     {
+
+        /// TODO: Get Record from DB
         $data = DropZone::where("is_active", 1)
             ->where("id", $id)
             ->first();
@@ -102,13 +106,72 @@ class UploadAttachmentController extends Controller
             ->with("data", $data);
     }
 
-    public function update(Request $request, $id) {}
+    public function update(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
 
-    public function show($id) {}
+            /// TODO: Validate Datas
+            $validate = $request->validate([
+                "name" => "required",
+                "subject" => "required"
+            ]);
 
-    public function destroy($id) {}
+            /// TODO: Update Data in DB
+            $data = DropZone::where("is_active", 1)
+                ->where("id", $id)
+                ->update([
+                    "name" => $request->name,
+                    "subject" => $request->subject
+                ]);
 
-    /// TODO: Upload File into Temp Folder
+            DB::commit();
+
+            return redirect()->route("index")->with("message", "Data Updated Successfully .");
+
+        } catch (Exception $exce) {
+            DB::rollback();
+            return redirect()->back()->with("error", "Something went wrong, please try again !");
+        }
+    }
+
+    public function show($id)
+    {
+        /// TODO: Get Record from DB
+        $data = DropZone::where("is_active", 1)
+            ->where("id", $id)
+            ->first();
+
+        return view("crud/show")
+            ->with("data", $data);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+
+            /// TODO: Update Data in DB
+            $data = DropZone::where("is_active", 1)
+                ->where("id", $id)
+                ->update([
+                    "is_active" => 0
+                ]);
+
+            DB::commit();
+
+            return redirect()->route("index")->with("message", "Data Deleted Successfully.");
+
+        } catch (Exception $exce) {
+            DB::rollback();
+            return redirect()->back()->with("error", "Something went wrong, please try again !");
+        }
+
+
+    }
+
+    /// TODO: Upload Files into Temp Location
+    /// TODO: for Create Function
     public function store_file(Request $request, $folder_name)
     {
         /// TODO: Get File
@@ -116,7 +179,6 @@ class UploadAttachmentController extends Controller
 
         /// TODO: Get File Name
         $file_name = $files->getClientOriginalName();
-
 
         /// TODO: Move File to Folder
         $files->move(storage_path($this->path_temp . $folder_name), $file_name);
@@ -126,7 +188,8 @@ class UploadAttachmentController extends Controller
 
     }
 
-    /// TODO:
+    /// TODO: Upload Files into Permanent Location
+    /// TODO: for Edit/Update Function
     public function store_permanent_file (Request $request, $folder_name)
     {
         /// TODO: Get File
@@ -142,11 +205,14 @@ class UploadAttachmentController extends Controller
         return response()->json(["success" => $file_name]);
     }
 
-    /// TODO: Fetch File from Temp Folder
+    /// TODO: Fetch Files from Temp Location
+    /// TODO: for Create Function
     public function fetch_file(Request $request)
     {
+        /// TODO: Get Folder Name
         $folder_name = $request->get("folder");
 
+        /// TODO: Get All Files from Folder in Temp Folder
         $files = File::allFiles(storage_path($this->path_temp . $folder_name));
 
         $output = '';
@@ -163,11 +229,14 @@ class UploadAttachmentController extends Controller
         echo $output;
     }
 
-    /// TODO:
+    /// TODO: Fetch Files from Permanent Location
+    /// TODO: for Edit/Update Function
     public function fetch_permanent_file (Request $request)
     {
+        /// TODO: Get Folder Name
         $folder_name = $request->get("folder");
 
+        /// TODO: Get All Files from Folder in Permanent Folder
         $files = File::allFiles(storage_path($this->path_permanent . $folder_name));
 
         $output = '';
@@ -183,41 +252,54 @@ class UploadAttachmentController extends Controller
         $output .= '';
         echo $output;
     }
-    /// TODO:
 
-    /// TODO:
-
-    /// TODO: Download File from Temp Folder
+    /// TODO: Download File from Temp Location
+    /// TODO: for Create Function
     public function download_file($folder_name, $file_name)
     {
+        /// TODO: Get File from Temp Location
         $file = storage_path() . $this->path_temp . $folder_name . "/" . $file_name;
+
+        /// TODO: Download
         return Response::download($file, $file_name);
     }
 
-    /// TODO: Download File from Permanent Folder
+    /// TODO: Download File from Permanent Location
+    /// TODO: for Edit/Update Function
     public function download_permanent_file($folder_name, $file_name)
     {
+        /// TODO: Get File from Permanent Location
         $file = storage_path() . $this->path_permanent . $folder_name . "/" . $file_name;
+
+        /// TODO: Download
         return Response::download($file, $file_name);
     }
 
-    /// TODO: Destroy File from Temp Folder
+    /// TODO: Destroy File from Temp Location
+    /// TODO: for Create Function
     public function destroy_file(Request $request)
     {
+        /// TODO: Get Folder Name
         $folder_name = $request->get("folder");
+
+        /// TODO: Check and Get File Name
         if ($request->get("name")) {
+            /// TODO: Delete File base on File Name in Temp Location
             File::delete(storage_path($this->path_temp . $folder_name . "/" . $request->get("name")));
         }
     }
 
-    /// TODO: Destroy File from Permanent Folder
+    /// TODO: Destroy File from Permanent Location
+    /// TODO: for Edit/Update Function
     public function destroy_permanent_file(Request $request)
     {
+        /// TODO: Get Folder Name
         $folder_name = $request->get("folder");
+
+        /// TODO: Check and Get File Name
         if ($request->get("name")) {
+            /// TODO: Delete File base on File Name in Permanent Location
             File::delete(storage_path($this->path_permanent . $folder_name . "/" . $request->get("name")));
         }
     }
-
-
 }

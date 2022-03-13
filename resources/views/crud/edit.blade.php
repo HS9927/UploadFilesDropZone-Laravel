@@ -62,7 +62,7 @@
         <a href="{{ route("index") }}" class="btn btn-danger px-5 mx-2">
             <img src="{{ asset("images/crud/cancel.png") }}" width="20px" height="20px" /> Cancel</a>
         <button type="button" class="btn btn-primary waves-effect waves-light px-5 mx-2" id="btn-submit">
-            <img src="{{ asset("images/crud/save.png") }}" width="20px" height="20px" /> Save
+            <img src="{{ asset("images/crud/save.png") }}" width="20px" height="20px" /> Submit
         </button>
     </div>
 @endsection
