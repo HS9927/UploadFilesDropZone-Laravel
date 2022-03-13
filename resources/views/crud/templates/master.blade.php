@@ -118,7 +118,7 @@
             "closeButton" : true,
             "progressBar" : true
         }
-    toastr.success("{{ session('message') }}");
+    toastr.success("{{ session('message') }}", "Success");
     @endif
 
         @if(Session::has('error'))
@@ -127,7 +127,7 @@
             "closeButton" : true,
             "progressBar" : true
         }
-    toastr.error("{{ session('error') }}");
+    toastr.error("{{ session('error') }}", "Error");
     @endif
 
         @if(Session::has('info'))
@@ -136,7 +136,7 @@
             "closeButton" : true,
             "progressBar" : true
         }
-    toastr.info("{{ session('info') }}");
+    toastr.info("{{ session('info') }}", "Info");
     @endif
 
         @if(Session::has('warning'))
@@ -145,7 +145,7 @@
             "closeButton" : true,
             "progressBar" : true
         }
-    toastr.warning("{{ session('warning') }}");
+    toastr.warning("{{ session('warning') }}", "Warning");
     @endif
 </script>
 
