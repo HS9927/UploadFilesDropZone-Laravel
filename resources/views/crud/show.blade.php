@@ -11,12 +11,12 @@
 
         <div class="form-group">
             <label>Name</label>
-            <input type="text" name="name" class="form-control" required />
+            <input type="text" name="name" class="form-control" value="{{ $data->name }}" required />
         </div>
 
         <div class="form-group mt-2">
             <label>Subject</label>
-            <input type="text" name="subject" class="form-control" required/>
+            <input type="text" name="subject" class="form-control" value="{{ $data->subject }}" required/>
         </div>
 
         <button type="submit" style="display: none;"></button>
@@ -56,7 +56,20 @@
             $("#main-frm").find("[type='submit']").trigger("click");
         });
 
-
+        $(document).on('click', '.remove_image', function () {
+            var name = $(this).attr('id');
+            var folderName = "{{ $data->folder_name }}";
+            $.ajax({
+                url: "{{ route('destroy.permanent.file') }}",
+                data: {
+                    folder: folderName,
+                    name: name
+                },
+                success: function (data) {
+                    load_images();
+                }
+            })
+        });
 
 
     </script>
