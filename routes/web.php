@@ -34,5 +34,5 @@ Route::post("/file/store/{folder_name}", [UploadAttachmentController::class, "st
 Route::post("/file/store/permanent/{folder_name}", [UploadAttachmentController::class, "store_permanent_file"])->name("store.permanent.file");
 Route::get("/file/destroy", [UploadAttachmentController::class, "destroy_file"])->name("destroy.temp.file");
 Route::get("/file/destroy/permanent", [UploadAttachmentController::class, "destroy_permanent_file"])->name("destroy.permanent.file");
-Route::get("/file/download/temp", [UploadAttachmentController::class, "download_file"])->name("download.temp.file");
-Route::get("/file/download/permanent", [UploadAttachmentController::class, "download_permanent_file"])->name("download.permanent.file");
+Route::get("/file/download/temp/{folder_name}/{file_name}", [UploadAttachmentController::class, "download_file"])->name("download.temp.file");
+Route::get("/file/download/permanent/{folder_name}/{file_name}", [UploadAttachmentController::class, "download_permanent_file"])->name("download.permanent.file");

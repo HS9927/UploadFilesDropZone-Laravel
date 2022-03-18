@@ -258,7 +258,7 @@ class UploadAttachmentController extends Controller
     public function download_file($folder_name, $file_name)
     {
         /// TODO: Get File from Temp Location
-        $file = storage_path() . $this->path_temp . $folder_name . "/" . $file_name;
+        $file = storage_path() ."/". $this->path_temp . $folder_name . "/" . $file_name;
 
         /// TODO: Download
         return Response::download($file, $file_name);
@@ -269,7 +269,7 @@ class UploadAttachmentController extends Controller
     public function download_permanent_file($folder_name, $file_name)
     {
         /// TODO: Get File from Permanent Location
-        $file = storage_path() . $this->path_permanent . $folder_name . "/" . $file_name;
+        $file = storage_path() ."/". $this->path_permanent . $folder_name . "/" . $file_name;
 
         /// TODO: Download
         return Response::download($file, $file_name);
